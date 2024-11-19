@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora GIC</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .calculator {
+            display: inline-block;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+        .display {
+            width: 100%;
+            height: 50px;
+            background: #222;
+            color: #fff;
+            text-align: right;
+            padding: 10px;
+            font-size: 18px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        button {
+            padding: 15px;
+            font-size: 16px;
+            text-align: center;
+            background: #eee;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #ddd;
+        }
+        button.operator {
+            background: #f9a825;
+            color: white;
+        }
+        button.operator:hover {
+            background: #f57c00;
+        }
+        button.equal {
+            background: #4caf50;
+            color: white;
+            grid-column: span 2;
+        }
+        button.equal:hover {
+            background: #388e3c;
+        }
+        button.clear {
+            background: #d32f2f;
+            color: white;
+            grid-column: span 2;
+        }
+        button.clear:hover {
+            background: #c62828;
+        }
+        .result, .tree {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculadora Gramática Independiente del Contexto</h1>
+    <div class="calculator">
+        <form method="POST">
+            <div class="display" id="display">{{ expression }}</div>
+            <div class="buttons">
+                <button type="button" onclick="appendToDisplay('7')">7</button>
+                <button type="button" onclick="appendToDisplay('8')">8</button>
+                <button type="button" onclick="appendToDisplay('9')">9</button>
+                <button type="button" class="operator" onclick="appendToDisplay('+')">+</button>
+
+                <button type="button" onclick="appendToDisplay('4')">4</button>
+                <button type="button" onclick="appendToDisplay('5')">5</button>
+                <button type="button" onclick="appendToDisplay('6')">6</button>
+                <button type="button" class="operator" onclick="appendToDisplay('-')">-</button>
+
+                <button type="button" onclick="appendToDisplay('1')">1</button>
+                <button type="button" onclick="appendToDisplay('2')">2</button>
+                <button type="button" onclick="appendToDisplay('3')">3</button>
+                <button type="button" class="operator" onclick="appendToDisplay('*')">*</button>
+
+                <button type="button" onclick="appendToDisplay('0')">0</button>
+                <button type="button" onclick="appendToDisplay('.')">.</button>
+                <button type="button" class="operator" onclick="appendToDisplay('/')">/</button>
+                <button type="button" onclick="appendToDisplay('(')">(</button>
+
+                <button type="button" onclick="appendToDisplay(')')">)</button>
+                <button type="button" class="clear" onclick="clearDisplay()">C</button>
+                <button type="submit" class="equal">=</button>
+            </div>
+            <input type="hidden" name="expression" id="hidden-input" value="{{ expression }}">
+        </form>
+    </div>
+    {% if result %}
+        <div class="result">
+            <strong>Resultado:</strong> {{ result }}
+        </div>
+    {% endif %}
+    {% if tree_path %}
+        <div class="tree">
+            <h3>Árbol Sintáctico</h3>
+            <img src="{{ tree_path }}" alt="Árbol Sintáctico">
+        </div>
+    {% endif %}
+
+    <script>
+        const display = document.getElementById('display');
+        const hiddenInput = document.getElementById('hidden-input');
+
+        function appendToDisplay(value) {
+            display.innerText += value;
+            hiddenInput.value = display.innerText;
+        }
+
+        function clearDisplay() {
+            display.innerText = '';
+            hiddenInput.value = '';
+        }
+    </script>
+</body>
+</html>
